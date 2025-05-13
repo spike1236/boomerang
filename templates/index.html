@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Task Processing Form</title>
+        <style>
+            body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+            form { display: flex; flex-direction: column; gap: 15px; }
+            label { font-weight: bold; }
+            input, textarea, select { padding: 8px; }
+            button { padding: 10px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+            button:hover { background: #45a049; }
+        </style>
+    </head>
+    <body>
+        <h1>Submit Task</h1>
+        <form action="/submit" method="post">
+            <div>
+                <label for="task_type">Task Type:</label>
+                <select id="task_type" name="task_type" required>
+                    {% for task_type in task_types %}
+                        <option value="{{ task_type }}">{{ task_type }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="input_text">Task Input:</label>
+                <textarea id="input_text" name="input_text" rows="4" required></textarea>
+            </div>
+            <button type="submit">Submit Task</button>
+        </form>
+        <div style="margin-top: 20px;">
+            <h2>Check Task Status</h2>
+            <form action="/task" method="get">
+                <div>
+                    <label for="task_id">Task ID:</label>
+                    <input type="text" id="task_id" name="id" required>
+                </div>
+                <button type="submit">Check Status</button>
+            </form>
+        </div>
+        <div style="margin-top: 20px;">
+            <a href="/tasks">View Tasks JSON</a> | 
+            <a href="/tasks/view">View Tasks UI</a>
+        </div>
+    </body>
+</html>

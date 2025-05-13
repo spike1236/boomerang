@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Details - {{ task.id }}...</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; }
+        .task-details { border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 5px; background-color: #f9f9f9; }
+        .task-details p { margin: 5px 0; }
+        .task-details strong { display: inline-block; width: 120px; }
+        .result-box { border: 1px solid #ccc; padding: 15px; margin-top: 20px; background-color: #fff; border-radius: 5px; min-height: 50px; }
+        .pending { color: #ff9800; }
+        .processing { color: #2196F3; }
+        .completed { color: #4CAF50; }
+        .failed { color: #f44336; }
+        pre { background-color: #eee; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        code { font-family: monospace; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <h1>Task Details</h1>
+    <a href="/tasks/view">Back to Task List</a> | <a href="/">Back to Home</a>
+
+    <div class="task-details">
+        <p><strong>ID:</strong> {{ task.id }}</p>
+        <p><strong>Type:</strong> {{ task.task_type }}</p>
+        <p><strong>Status:</strong> <span class="{{ task.status }}">{{ task.status }}</span></p>
+        <p><strong>Created:</strong> {{ task.created_at.strftime('%Y-%m-%d %H:%M:%S') if task.created_at else 'N/A' }}</p>
+        <p><strong>Updated:</strong> {{ task.updated_at.strftime('%Y-%m-%d %H:%M:%S') if task.updated_at else 'N/A' }}</p>
+        <p><strong>Completed:</strong> {{ task.completed_at.strftime('%Y-%m-%d %H:%M:%S') if task.completed_at else 'N/A' }}</p>
+        <p><strong>Input:</strong></p>
+        <pre><code>{{ task.input_text }}</code></pre>
+    </div>
+
+    <h2>Result</h2>
+    <div id="raw-result" style="display: none;">{{ raw_result_content | e }}</div>
+    <div id="rendered-result" class="result-box">
+        Loading result...
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const rawMarkdown = document.getElementById('raw-result').textContent || document.getElementById('raw-result').innerText;
+            const renderedResultDiv = document.getElementById('rendered-result');
+            if (rawMarkdown && renderedResultDiv) {
+                marked.setOptions({
+                  gfm: true,
+                  breaks: true
+                });
+                const htmlContent = marked.parse(rawMarkdown);
+                renderedResultDiv.innerHTML = htmlContent;
+            } else if (renderedResultDiv) {
+                renderedResultDiv.innerHTML = '<p>No result content found.</p>';
+            }
+        });
+    </script>
+
+</body>
+</html>
