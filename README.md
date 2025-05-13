@@ -38,7 +38,7 @@ boomerang/
    ```sh
    python main.py
    ```
-   The app will be available at `http://localhost:8000` (or your configured port).
+   The app will be available at configured port.
 
 ## Usage
 - **Web UI**: Visit `/` to submit tasks and view results.
@@ -59,7 +59,7 @@ Example:
 from app.task_manager import task_processor
 
 @task_processor
-def my_task(input_text):
+async def my_task(input_text):
     return input_text[::-1]  # Reverse the input
 ```
 
